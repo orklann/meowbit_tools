@@ -8,15 +8,20 @@ im = Image.open(image_path)
 width = im.size[0]
 height = im.size[1]
 
-result = BitArray()
+result = bytearray()
 for y in range(height):
     for x in range(width):
         coordinate = (x, y)
         color = im.getpixel(coordinate)
-        if color != 0:
+        alpha = color[3]
+        if alpha == 0:
+            color = 2
+        elif color[0] == 0 and color[1] == 0 and color[2] == 0:
+            color = 0
+        else:
             color = 1
         result.append(color)
 
 f = open(saved_path, "wb")
-f.write(result.bytes)
+f.write(result)
 f.close()
