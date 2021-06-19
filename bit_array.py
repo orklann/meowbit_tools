@@ -1,84 +1,29 @@
 import math
 
+BITS_ONE = [0b10000000, 0b01000000, 0b00100000, 
+    0b00010000, 0b00001000, 0b00000100, 0b00000010,
+    0b00000001
+]
+
+BITS_ZERO = [0b01111111, 0b10111111, 0b11011111,
+    0b11101111, 0b11110111, 0b11111011, 0b11111101,
+    0b11111110
+]
+
 def set_bit(byte, bit, index):
-    if index == 0:
-        if bit == 1:
-            v = 0b10000000
-        elif bit == 0:
-            v = 0b01111111
-    elif index == 1:
-        if bit == 1:
-            v = 0b01000000
-        elif bit == 0:
-            v = 0b10111111
-    elif index == 2:
-        if bit == 1:
-            v = 0b00100000
-        elif bit == 0:
-            v = 0b11011111
-    elif index == 3:
-        if bit == 1:
-            v = 0b00010000
-        elif bit == 0:
-            v = 0b11101111
-    elif index == 4:
-        if bit == 1:
-            v = 0b00001000
-        elif bit == 0:
-            v = 0b11110111
-    elif index == 5:
-        if bit == 1:
-            v = 0b00000100
-        elif bit == 0:
-            v = 0b11111011
-    elif index == 6:
-        if bit == 1:
-            v = 0b00000010
-        elif bit == 0:
-            v = 0b11111101
-    elif index == 7:
-        if bit == 1:
-            v = 0b00000001
-        elif bit == 0:
-            v = 0b11111110
+    if bit == 1:
+        v = BITS_ONE[index]
     if bit == 0:
+        v = BITS_ZERO[index]
         return byte & v
     return byte | v
 
 def get_bit(byte, index):
     result = 0
-    if index == 0:
-        v = 0b10000000
-        byte = byte & v
-        result = byte >> 7
-    elif index == 1:
-        v = 0b01000000
-        byte = byte & v
-        result = byte >> 6
-    elif index == 2:
-        v = 0b00100000
-        byte = byte & v
-        result = byte >> 5
-    elif index == 3:
-        v = 0b00010000
-        byte = byte & v
-        result = byte >> 4
-    elif index == 4:
-        v = 0b00001000
-        byte = byte & v
-        result = byte >> 3
-    elif index == 5:
-        v = 0b00000100
-        byte = byte & v
-        result = byte >> 2
-    elif index == 6:
-        v = 0b00000010
-        byte = byte & v
-        result = byte >> 1
-    elif index == 7:
-        v = 0b00000001
-        byte = byte & v
-        result = byte
+    v = BITS_ONE[index]
+    shift = 8 - index - 1
+    byte = byte & v
+    result = byte >> shift
     return result
 
 class BitArray():
