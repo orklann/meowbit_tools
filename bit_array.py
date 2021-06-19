@@ -28,14 +28,12 @@ def get_bit(byte, index):
 
 class BitArray():
     def __init__(self):
-        self.bytes = bytearray(1)
+        self.bytes = bytearray(0)
         self.length = 0
 
     def append(self, v):
         bit_index = self.length % 8
         byte_index = int(math.floor(self.length / 8.0))
-        if byte_index > len(self.bytes) - 1:
-            self.bytes.append(0x00)
         byte = self.bytes[byte_index]
         byte = set_bit(byte, v, bit_index)
         self.bytes[byte_index] = byte
