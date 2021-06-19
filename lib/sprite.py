@@ -1,4 +1,4 @@
-from meowbit import screen
+from meowbit import screen, tft, framebuf, fb
 
 _sprites = []
 
@@ -12,25 +12,30 @@ class Sprite():
         _sprites.append(self)
         self.drawing = False
 
-    def load(self, path):
+    def load(self, path, width, height):
         f = open(path, "rb")
-        self.bytes = f.read()
+        content = f.read()
         f.close()
+        self.bytes = bytearray(width * height * 2)
+        for i in range(0, width*height*2, 2):
+            color = content[int(i/2)]
+            if color == 1:
+                self.bytes[i] = 0xff
+                self.bytes[i+1] = 0xff
+            elif color == 0:
+                self.bytes[i] = 0x00
+                self.bytes[i] = 0x00
+            else:
+                self.bytes[i] = 0x02
+                self.bytes[i+1] = 0x00
+        self.width = width
+        self.height = height
+        self.fb = framebuf.FrameBuffer(self.bytes, width, height, framebuf.RGB565)
 
     def draw(self):
         if (self.drawing):
             return
         self.drawing = True
-        i = 0
-        for y in range(self.height):
-            for x in range(self.width):
-                xx = self.x + x
-                yy = self.y + y
-                color = self.bytes[i]
-                if color != 0 and color != 2:
-                    color = 255
-                if color != 2:
-                    screen.pixel(xx, yy, color=color)
-                i += 1
+        fb.blit(self.fb, self.x, self.y, 0x02)
         self.drawing = False
     
