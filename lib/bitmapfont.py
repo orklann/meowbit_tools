@@ -47,8 +47,8 @@ class BitmapFont:
         # Don't draw the character if it will be clipped off the visible area.
         if x < -self._font_width or x >= self._width or \
            y < -self._font_height or y >= self._height:
-            pass
-            #return
+            pass # Fixed char not draw
+            # return 
         # Go through each column of the character.
         for char_x in range(self._font_width):
             # Grab the byte for the current column of font data.
