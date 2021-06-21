@@ -128,16 +128,17 @@ def get_byte():
         ch = hex_string[index]
     s += str(ch)
     index += 1
-    return hex(int(s, 16))
+    return int(s, 16)
 
-result = "["
+result = bytearray()
 
 byte = get_byte()
 while(byte is not None):
-    result += str(byte) + ","
+    result.append(byte)
     byte = get_byte()
 
-result += "]"
 
-print(result)
-print(len(hex_string))
+print(len(result))
+f = open("font8.bin", "wb")
+f.write(result)
+f.close()
